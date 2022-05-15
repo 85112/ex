@@ -1,0 +1,64 @@
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+include "auth_session.php";
+include "config.php";
+?>
+<?php
+$msg = "";
+
+// If upload button is clicked ...
+if (isset($_POST['upload'])) {
+
+    $image = $_FILES["uploadfile"]["name"];
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+    $folder = "snapafbeeldingen/".$image;
+    $teller = 10;
+
+
+    // Get all the submitted data from the form
+    $sql = "INSERT INTO Snapchat_fotos(FotoID, Image, VriendID, Seconde) VALUES ('NULL','$image','$AccountID','$teller')";
+
+    // Execute query
+    mysqli_query($mysqli, $sql);
+
+    // Now let's move the uploaded image into the folder: image
+    if (move_uploaded_file($tempname, $folder))  {
+        $msg = "Image uploaded successfully";
+    }else{
+        $msg = "Failed to upload image";
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/d3d6f2df1f.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="index.css">
+    <div id="content">
+
+        <form method="POST" action="" enctype="multipart/form-data">
+            <input type="file" name="uploadfile" value=""/>
+
+            <div>
+                <button type="submit" name="upload">UPLOAD</button>
+            </div>
+        </form>
+    </div>
+<br/><br/>
+
+
+    </body>
+</html>
