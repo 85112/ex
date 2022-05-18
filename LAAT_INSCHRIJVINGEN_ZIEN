@@ -1,0 +1,18 @@
+    if ($_SESSION['Level'] == 1) {
+        $InschrijvingSql = $mysqli->query('SELECT COUNT(*) FROM Inschrijvingen WHERE ReisID=' . $_GET["id"]);
+        $TotaalInschrijving = implode(mysqli_fetch_assoc($InschrijvingSql));
+
+        $InschrijvingSql2 = $mysqli->query('SELECT * FROM `Inschrijvingen` WHERE StudentNr=' . $_SESSION["StudentNr"]);
+
+        if (!mysqli_num_rows($InschrijvingSql2)) {
+            if ($TotaalInschrijving == $rij["MaxInschrijving"]) {
+                echo "Inschrijvingen zitten vol";
+            } else {
+                echo $TotaalInschrijving . " ingeschreven van de " . $rij['MaxInschrijving'];
+                echo "<center><h3><a href='inschrijven.php?id=" . $rij['ReisID'] . "'>inschrijven</a></h3></center>";
+            }
+        } else {
+            echo "Je bent al ingeschreven";
+            echo "<a href='uitschrijven.php?id=" . $rij['ReisID'] . "' class='btn'>Uitschrijven</a>";
+        }
+    }
